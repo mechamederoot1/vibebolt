@@ -126,11 +126,10 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
         }
       }
 
-      const response = await fetch("http://localhost:8000/posts/", {
+      const response = await apiCall("/posts/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
