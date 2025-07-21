@@ -4,6 +4,7 @@ import { ResponsiveCreateStoryModal } from "./modals/ResponsiveCreateStoryModal"
 import { PostCard } from "./posts/PostCard";
 import { EnhancedStoriesBar } from "./stories/EnhancedStoriesBar";
 import { createStoryWithFile } from "./stories/StoryUploadHelper";
+import { apiCall } from "../config/api";
 
 // Global function type declaration
 declare global {
@@ -59,10 +60,9 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("http://localhost:8000/posts/", {
+      const response = await apiCall("/posts/", {
         headers: {
           Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
         },
       });
 
@@ -71,10 +71,14 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
         setPosts(
           data.map((post: any) => ({
             ...post,
+            user: post.author, // Map author to user for PostCard compatibility
             author: {
               ...post.author,
               name: `${post.author.first_name} ${post.author.last_name}`,
             },
+            likes_count: post.reactions_count || 0,
+            is_liked: false, // Set default values
+            is_bookmarked: false,
           })),
         );
       } else if (response.status === 401) {
@@ -122,11 +126,10 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
         }
       }
 
-      const response = await fetch("http://localhost:8000/posts/", {
+      const response = await apiCall("/posts/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
@@ -279,8 +282,10 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
             <PostCard
               key={post.id}
               post={post}
-              userToken={user.token}
-              onPostDeleted={fetchPosts}
+              onLike={(postId) => console.log('Like post:', postId)}
+              onComment={(postId) => console.log('Comment post:', postId)}
+              onShare={(postId) => console.log('Share post:', postId)}
+              onBookmark={(postId) => console.log('Bookmark post:', postId)}
             />
           ))
         )}

@@ -1,4 +1,5 @@
 // Helper functions for story upload functionality
+import { apiCall, API_BASE_URL } from "../../config/api";
 
 export interface StoryUploadData {
   content: string;
@@ -23,7 +24,7 @@ export const uploadStoryMedia = async (
     formData.append("file", file);
 
     // Try different upload endpoints
-    const response = await fetch("http://localhost:8000/users/me/media", {
+    const response = await fetch(`${API_BASE_URL}/users/me/media`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -59,18 +60,17 @@ export const createStoryWithFile = async (
     let mediaUrl: string | null = null;
     let mediaType: "text" | "photo" | "video" | "music" | null = "text";
 
-    // If there's a media file, convert to base64 for now (fallback approach)
+    // If there's a media file, upload it first
     if (mediaFile) {
-      console.log("📤 Converting media file to base64...");
+      console.log("📤 Uploading media file...");
 
-      // Convert to base64
-      const base64 = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.readAsDataURL(mediaFile);
-      });
+      // Upload the media file first
+      mediaUrl = await uploadStoryMedia(mediaFile, userToken);
 
-      mediaUrl = base64;
+      if (!mediaUrl) {
+        console.error("❌ Failed to upload media file");
+        return false;
+      }
 
       // Determine media type based on file
       if (mediaFile.type.startsWith("image/")) {
@@ -81,7 +81,7 @@ export const createStoryWithFile = async (
         mediaType = "music";
       }
 
-      console.log("✅ Media converted to base64 successfully");
+      console.log("✅ Media uploaded successfully:", mediaUrl);
     }
 
     // Create story payload
@@ -97,11 +97,10 @@ export const createStoryWithFile = async (
 
     console.log("📤 Creating story with payload:", payload);
 
-    const response = await fetch("http://localhost:8000/stories/", {
+    const response = await apiCall("/stories/", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
-        "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });

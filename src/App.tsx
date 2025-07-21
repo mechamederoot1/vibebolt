@@ -21,6 +21,7 @@ import { PublicProfilePage } from "./pages/PublicProfilePage";
 import { TermsOfService } from "./pages/TermsOfService";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { notificationService } from "./services/NotificationService";
+import { apiCall } from "./config/api";
 
 interface User {
   id?: number;
@@ -69,7 +70,7 @@ function App() {
 
   const fetchUserData = async (token: string) => {
     try {
-      const response = await fetch("http://localhost:8000/auth/me", {
+      const response = await apiCall("/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
