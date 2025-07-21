@@ -348,8 +348,8 @@ export function EnhancedProfileHeader({
               />
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
+            {/* Action Buttons - Hidden on mobile, shown on larger screens */}
+            <div className="hidden sm:flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
               {isOwnProfile ? (
                 <>
                   <button
@@ -409,10 +409,50 @@ export function EnhancedProfileHeader({
             </div>
 
             {user.username && (
-              <p className="text-gray-500 mb-2 text-sm sm:text-base">
+              <p className="text-gray-500 mb-3 text-sm sm:text-base">
                 @{user.username}
               </p>
             )}
+
+            {/* Mobile Action Buttons - Show on mobile after name/username */}
+            <div className="flex sm:hidden flex-col gap-3 mb-4">
+              {isOwnProfile ? (
+                <>
+                  <button
+                    onClick={onEditProfile}
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                    <span>Editar perfil</span>
+                  </button>
+                  <button
+                    onClick={() => navigate("/user-info")}
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm font-medium"
+                  >
+                    <Info className="w-4 h-4" />
+                    <span>Mais informações</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                    <UserPlus className="w-4 h-4" />
+                    <span>Seguir</span>
+                  </button>
+                  <button className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium">
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Mensagem</span>
+                  </button>
+                  <button
+                    onClick={() => navigate(`/user-info/${user.id}`)}
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm font-medium"
+                  >
+                    <Info className="w-4 h-4" />
+                    <span>Ver mais</span>
+                  </button>
+                </>
+              )}
+            </div>
 
             {user.bio && <p className="text-gray-700 mb-4">{user.bio}</p>}
 
