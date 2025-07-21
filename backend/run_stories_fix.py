@@ -30,9 +30,9 @@ def run_command(command):
 def fix_database():
     """Fix database issues"""
     print("🔧 Fixing database...")
-    
+
     try:
-        from core.database import engine
+        from main import engine
         
         with engine.connect() as conn:
             print("📊 Checking current table structure...")
