@@ -15,6 +15,7 @@ import {
   Smile,
 } from "lucide-react";
 import { createStoryWithFile } from "../stories/StoryUploadHelper";
+import { BACKGROUND_GRADIENTS, getSafeBackground, getBackgroundStyle } from "../stories/BackgroundUtils";
 
 interface EnhancedMobileStoryCreatorProps {
   isOpen: boolean;
@@ -29,14 +30,7 @@ interface MediaCapture {
   type: "image" | "video";
 }
 
-const BACKGROUND_GRADIENTS = [
-  "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-  "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-  "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-  "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-  "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-  "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-];
+
 
 export function EnhancedMobileStoryCreator({
   isOpen,
@@ -147,11 +141,15 @@ export function EnhancedMobileStoryCreator({
     setIsSubmitting(true);
 
     try {
+      // Ensure background is safe for database storage
+      const safeBackground = getSafeBackground(backgroundColor);
+      console.log("Using safe background:", safeBackground);
+
       const success = await createStoryWithFile(
         content,
         mediaCapture?.file || null,
         24, // 24 hours duration
-        backgroundColor,
+        safeBackground,
         "public",
         userToken
       );
@@ -257,7 +255,7 @@ export function EnhancedMobileStoryCreator({
       {/* Preview Area */}
       <div
         className="flex-1 relative overflow-hidden"
-        style={{ backgroundImage: backgroundColor }}
+        style={getBackgroundStyle(backgroundColor)}
       >
         {/* Media Preview */}
         {mediaCapture && (
