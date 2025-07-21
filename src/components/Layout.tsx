@@ -141,7 +141,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
   ) => {
     try {
       // Import the proper story creation helper
-      const { createStoryWithFile } = await import('../stories/StoryUploadHelper');
+      const { createStoryWithFile } = await import('./stories/StoryUploadHelper');
 
       // Extract the actual file from mediaData if present
       const mediaFile = mediaData?.file || null;
