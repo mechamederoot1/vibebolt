@@ -441,6 +441,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
         isOpen={showCreateStory}
         onClose={() => setShowCreateStory(false)}
         onSubmit={handleCreateStory}
+        onSuccess={() => {
+          setShowCreateStory(false);
+          window.location.reload(); // Refresh to show new story
+        }}
         userToken={user.token}
       />
 
