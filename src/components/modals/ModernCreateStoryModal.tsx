@@ -249,16 +249,10 @@ export function ModernCreateStoryModal({
 
     let mediaData = null;
     if (mediaFile) {
-      const base64 = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.readAsDataURL(mediaFile);
-      });
-
+      // Pass the actual file object, not base64
       mediaData = {
         type: storyType,
-        url: base64,
-        file: mediaFile,
+        file: mediaFile, // This is what the upload helper expects
         fileName: mediaFile.name,
         fileSize: mediaFile.size,
       };
