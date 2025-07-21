@@ -319,42 +319,42 @@ export const EnhancedStoriesBar: React.FC<StoriesBarProps> = ({
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-gray-900">Stories</h3>
-          <div className="flex items-center space-x-2">
+      <div className="bg-white rounded-xl shadow-sm p-3 md:p-4">
+        <div className="flex items-center justify-between mb-3 md:mb-4">
+          <h3 className="font-semibold text-gray-900 text-sm md:text-base">Stories</h3>
+          <div className="flex items-center space-x-1 md:space-x-2">
             {totalPages > 1 && (
               <>
                 <button
                   onClick={prevPage}
                   disabled={currentPage === 0}
-                  className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-3 h-3 md:w-4 md:h-4" />
                 </button>
-                <span className="text-sm text-gray-500 px-2">
+                <span className="text-xs md:text-sm text-gray-500 px-1 md:px-2">
                   {currentPage + 1} / {totalPages}
                 </span>
                 <button
                   onClick={nextPage}
                   disabled={currentPage === totalPages - 1}
-                  className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
                 </button>
               </>
             )}
           </div>
         </div>
 
-        <div className="flex space-x-4 overflow-hidden">
+        <div className="flex space-x-3 md:space-x-4 overflow-x-auto pb-2 md:pb-0">
           {/* Add Story Button */}
           <button
             onClick={onCreateStory}
-            className="flex-shrink-0 flex flex-col items-center space-y-2 group"
+            className="flex-shrink-0 flex flex-col items-center space-y-1 md:space-y-2 group"
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Plus className="w-8 h-8 text-white" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Plus className="w-5 h-5 md:w-8 md:h-8 text-white" />
             </div>
             <span className="text-xs text-gray-600 font-medium">Seu story</span>
           </button>
@@ -381,7 +381,7 @@ export const EnhancedStoriesBar: React.FC<StoriesBarProps> = ({
                 <div className="relative">
                   {/* Enhanced Story Aura - much more visible */}
                   <div
-                    className={`w-16 h-16 rounded-full p-0.5 group-hover:scale-105 transition-all duration-300 ${
+                    className={`w-12 h-12 md:w-16 md:h-16 rounded-full p-0.5 group-hover:scale-105 transition-all duration-300 ${
                       hasUnread
                         ? "bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-lg animate-pulse"
                         : "bg-gray-300"
