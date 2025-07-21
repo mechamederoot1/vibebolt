@@ -18,6 +18,7 @@ import {
   MoreVertical,
   MessageSquare,
 } from "lucide-react";
+import { getWebSocketURL } from "../../config/api";
 
 interface User {
   id: number;
@@ -195,7 +196,7 @@ export function ChatPage({ user, onClose }: ChatPageProps) {
   const connectWebSocket = () => {
     if (!user.id) return;
 
-    const wsUrl = `ws://localhost:8000/ws/${user.id}?token=${user.token}`;
+    const wsUrl = getWebSocketURL(`/ws/${user.id}?token=${user.token}`);
     wsRef.current = new WebSocket(wsUrl);
 
     wsRef.current.onopen = () => {

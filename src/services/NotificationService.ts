@@ -1,3 +1,5 @@
+import { getWebSocketURL } from '../config/api';
+
 class NotificationService {
   private ws: WebSocket | null = null;
   private listeners: ((notification: any) => void)[] = [];
@@ -17,7 +19,7 @@ class NotificationService {
     if (!this.userId || !this.token) return;
 
     try {
-      const wsUrl = `ws://localhost:8000/ws/${this.userId}?token=${this.token}`;
+      const wsUrl = getWebSocketURL(`/ws/${this.userId}?token=${this.token}`);
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onopen = () => {
