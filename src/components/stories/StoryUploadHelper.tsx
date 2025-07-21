@@ -97,11 +97,10 @@ export const createStoryWithFile = async (
 
     console.log("📤 Creating story with payload:", payload);
 
-    const response = await fetch("http://localhost:8000/stories/", {
+    const response = await apiCall("/stories/", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
-        "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
