@@ -21,6 +21,7 @@ import {
   Lock,
   Sliders,
 } from "lucide-react";
+import { getSafeBackground, getBackgroundStyle } from "../stories/BackgroundUtils";
 
 interface ModernCreateStoryModalProps {
   isOpen: boolean;
@@ -259,7 +260,9 @@ export function ModernCreateStoryModal({
     }
 
     const finalBackground = useGradient ? gradientBackground : backgroundColor;
-    onSubmit(content, mediaData, storyDuration, finalBackground);
+    const safeBackground = getSafeBackground(finalBackground);
+    console.log("Using safe background:", safeBackground);
+    onSubmit(content, mediaData, storyDuration, safeBackground);
 
     // Reset form
     setContent("");
@@ -274,9 +277,8 @@ export function ModernCreateStoryModal({
   if (!isOpen) return null;
 
   const renderStoryPreview = () => {
-    const backgroundStyle = useGradient
-      ? { backgroundImage: gradientBackground }
-      : { backgroundColor };
+    const finalBackground = useGradient ? gradientBackground : backgroundColor;
+    const backgroundStyle = getBackgroundStyle(finalBackground);
 
     return (
       <div
