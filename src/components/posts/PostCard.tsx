@@ -32,6 +32,12 @@ export function PostCard({ post, onLike, onComment, onShare, onBookmark }: PostC
   const [likesCount, setLikesCount] = useState(post.likes_count);
   const [isBookmarked, setIsBookmarked] = useState(post.is_bookmarked);
 
+  // Handle case where post.user might be undefined
+  if (!post.user) {
+    console.error('PostCard: post.user is undefined', post);
+    return null;
+  }
+
   const handleLike = () => {
     setIsLiked(!isLiked);
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
