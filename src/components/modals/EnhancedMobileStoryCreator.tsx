@@ -143,7 +143,12 @@ export function EnhancedMobileStoryCreator({
     try {
       // Ensure background is safe for database storage
       const safeBackground = getSafeBackground(backgroundColor);
-      console.log("Using safe background:", safeBackground);
+      console.log("📝 Creating story with:", {
+        hasContent: !!content.trim(),
+        hasMedia: !!mediaCapture,
+        backgroundType: backgroundColor.startsWith('linear-gradient') ? 'gradient' : 'solid',
+        safeBackground
+      });
 
       const success = await createStoryWithFile(
         content,
@@ -157,13 +162,13 @@ export function EnhancedMobileStoryCreator({
       if (success) {
         onSuccess();
         onClose();
-        alert("🎉 Story criado com sucesso!");
+        console.log("✅ Story created successfully!");
       } else {
-        alert("❌ Erro ao criar story. Tente novamente.");
+        alert("❌ Erro ao criar story. Verifique sua conexão e tente novamente.");
       }
     } catch (error) {
       console.error("Error creating story:", error);
-      alert("❌ Erro ao criar story. Tente novamente.");
+      alert("❌ Erro ao criar story. Verifique sua conexão e tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
