@@ -70,7 +70,7 @@ function App() {
 
   const fetchUserData = async (token: string) => {
     try {
-      const response = await fetch("http://localhost:8000/auth/me", {
+      const response = await apiCall("/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
