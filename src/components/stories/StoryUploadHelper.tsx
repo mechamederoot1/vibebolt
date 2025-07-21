@@ -105,10 +105,10 @@ export const createStoryWithFile = async (
     }
 
     // Validate required content
-    if (!content && !mediaUrl) {
+    if (!content.trim() && !mediaUrl) {
       console.error("❌ Story must have either content or media");
-      alert("Adicione texto ou uma mídia ao seu story!");
-      return false;
+      console.log("📋 Validation failed:", { content: content.length, mediaUrl: !!mediaUrl });
+      return false; // Don't show alert here, let the calling component handle it
     }
 
     // Create story payload
@@ -122,7 +122,10 @@ export const createStoryWithFile = async (
       overlays: [],
     };
 
-    console.log("📤 Creating story with payload:", payload);
+    console.log("📤 Creating story with payload:", {
+      ...payload,
+      media_url: payload.media_url ? `${payload.media_url.substring(0, 50)}...` : null // Truncate for logging
+    });
 
     const response = await apiCall("/stories/", {
       method: "POST",
