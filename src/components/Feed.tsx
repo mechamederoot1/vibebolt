@@ -71,10 +71,14 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
         setPosts(
           data.map((post: any) => ({
             ...post,
+            user: post.author, // Map author to user for PostCard compatibility
             author: {
               ...post.author,
               name: `${post.author.first_name} ${post.author.last_name}`,
             },
+            likes_count: post.reactions_count || 0,
+            is_liked: false, // Set default values
+            is_bookmarked: false,
           })),
         );
       } else if (response.status === 401) {
