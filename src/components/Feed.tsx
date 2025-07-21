@@ -4,6 +4,7 @@ import { ResponsiveCreateStoryModal } from "./modals/ResponsiveCreateStoryModal"
 import { PostCard } from "./posts/PostCard";
 import { EnhancedStoriesBar } from "./stories/EnhancedStoriesBar";
 import { createStoryWithFile } from "./stories/StoryUploadHelper";
+import { apiCall } from "../config/api";
 
 // Global function type declaration
 declare global {
@@ -137,7 +138,7 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
 
       if (response.ok) {
         const postData = await response.json();
-        console.log("✅ Post/Testimonial created successfully:", postData);
+        console.log("�� Post/Testimonial created successfully:", postData);
         console.log("🔄 Refreshing feeds...");
 
         fetchPosts();
