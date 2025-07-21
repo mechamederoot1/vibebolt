@@ -91,16 +91,16 @@ export function SimpleAuth({ onLogin }: AuthProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center md:p-4">
+      <div className="w-full max-w-md md:w-full">
+        <div className="bg-white md:rounded-2xl md:shadow-xl p-6 md:p-8 min-h-screen md:min-h-0">
           {/* Logo */}
           <div className="text-center mb-8">
             <Logo size="lg" showText={true} />
-            <h2 className="text-2xl font-bold text-gray-900 mt-4">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mt-4">
               {isLogin ? "Bem-vindo de volta!" : "Criar conta"}
             </h2>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 mt-2 text-sm md:text-base">
               {isLogin
                 ? "Entre na sua conta para continuar"
                 : "Junte-se à nossa comunidade"}
@@ -115,7 +115,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-4">
             {!isLogin && (
               <>
                 <div>
@@ -129,7 +129,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
                       name="first_name"
                       value={formData.first_name}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                       placeholder="Seu nome"
                       required
                     />
@@ -147,7 +147,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
                       name="last_name"
                       value={formData.last_name}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                       placeholder="Seu sobrenome"
                       required
                     />
@@ -167,7 +167,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                   placeholder="seu@email.com"
                   required
                 />
@@ -185,7 +185,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-12 py-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                   placeholder="••••••••"
                   required
                 />
@@ -215,7 +215,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
                     name="confirm_password"
                     value={formData.confirm_password}
                     onChange={handleInputChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-4 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                     placeholder="••••••••"
                     required
                   />
@@ -226,7 +226,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 md:py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-base"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -243,7 +243,7 @@ export function SimpleAuth({ onLogin }: AuthProps) {
 
           {/* Toggle Auth Mode */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm md:text-base">
               {isLogin ? "Não tem uma conta?" : "Já tem uma conta?"}{" "}
               <button
                 onClick={() => {
