@@ -311,9 +311,9 @@ export function EnhancedProfileHeader({
 
         {/* Profile Info */}
         <div className="relative px-4 sm:px-6 pb-6">
-          {/* Avatar */}
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-16 mb-4">
-            <div className="relative self-center sm:self-start">
+          {/* Avatar - Centered */}
+          <div className="flex flex-col items-center -mt-16 mb-6">
+            <div className="relative">
               {user.avatar ? (
                 <img
                   key={user.avatar} // Force re-render when avatar changes
@@ -348,20 +348,45 @@ export function EnhancedProfileHeader({
               />
             </div>
 
-            {/* Action Buttons - Hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
+            {/* User Name - Directly below avatar */}
+            <div className="text-center mt-4 mb-4">
+              <div className="flex items-center justify-center space-x-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  {user.name}
+                  {user.nickname && user.nickname !== user.name && (
+                    <span className="text-gray-600 font-normal ml-2">
+                      ({user.nickname})
+                    </span>
+                  )}
+                </h1>
+                {user.is_verified && (
+                  <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                )}
+              </div>
+
+              {user.username && (
+                <p className="text-gray-500 mt-1 text-sm sm:text-base">
+                  @{user.username}
+                </p>
+              )}
+            </div>
+
+            {/* Action Buttons - Centered below name */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
               {isOwnProfile ? (
                 <>
                   <button
                     onClick={onEditProfile}
-                    className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium"
                   >
                     <Edit3 className="w-4 h-4" />
                     <span>Editar perfil</span>
                   </button>
                   <button
                     onClick={() => navigate("/user-info")}
-                    className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors"
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm font-medium"
                   >
                     <Info className="w-4 h-4" />
                     <span>Mais informações</span>
@@ -369,17 +394,17 @@ export function EnhancedProfileHeader({
                 </>
               ) : (
                 <>
-                  <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                  <button className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
                     <UserPlus className="w-4 h-4" />
                     <span>Seguir</span>
                   </button>
-                  <button className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                  <button className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium">
                     <MessageCircle className="w-4 h-4" />
                     <span>Mensagem</span>
                   </button>
                   <button
                     onClick={() => navigate(`/user-info/${user.id}`)}
-                    className="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors"
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm font-medium"
                   >
                     <Info className="w-4 h-4" />
                     <span>Ver mais</span>
@@ -389,24 +414,8 @@ export function EnhancedProfileHeader({
             </div>
           </div>
 
-          {/* User Info */}
+          {/* Additional User Info */}
           <div>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 mb-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                {user.name}
-                {user.nickname && user.nickname !== user.name && (
-                  <span className="text-gray-600 font-normal">
-                    {" "}
-                    ({user.nickname})
-                  </span>
-                )}
-              </h1>
-              {user.is_verified && (
-                <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-              )}
-            </div>
 
             {user.username && (
               <p className="text-gray-500 mb-3 text-sm sm:text-base">
