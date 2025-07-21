@@ -283,8 +283,10 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
             <PostCard
               key={post.id}
               post={post}
-              userToken={user.token}
-              onPostDeleted={fetchPosts}
+              onLike={(postId) => console.log('Like post:', postId)}
+              onComment={(postId) => console.log('Comment post:', postId)}
+              onShare={(postId) => console.log('Share post:', postId)}
+              onBookmark={(postId) => console.log('Bookmark post:', postId)}
             />
           ))
         )}
