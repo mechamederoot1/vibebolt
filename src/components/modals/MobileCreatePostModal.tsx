@@ -48,6 +48,7 @@ export function MobileCreatePostModal({
   const [showPrivacyOptions, setShowPrivacyOptions] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -115,6 +116,12 @@ export function MobileCreatePostModal({
 
   const removeMediaFile = (index: number) => {
     setMediaFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const openCamera = () => {
+    if (cameraInputRef.current) {
+      cameraInputRef.current.click();
+    }
   };
 
   if (!isOpen) return null;
@@ -327,20 +334,20 @@ export function MobileCreatePostModal({
       {/* Bottom Actions */}
       <div className="p-4 border-t border-gray-200 bg-white">
         <div className="flex items-center justify-between">
-          <div className="flex space-x-4">
+          <div className="flex space-x-2">
             <button
-              onClick={() => fileInputRef.current?.click()}
-              className="flex items-center space-x-2 p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
+              onClick={openCamera}
+              className="flex items-center space-x-2 p-3 bg-blue-100 rounded-xl hover:bg-blue-200 transition-colors"
             >
-              <Image className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">Foto</span>
+              <Camera className="w-5 h-5 text-blue-600" />
+              <span className="text-sm font-medium text-blue-700">Câmera</span>
             </button>
             <button
               onClick={() => fileInputRef.current?.click()}
               className="flex items-center space-x-2 p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors"
             >
-              <Video className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">Vídeo</span>
+              <Image className="w-5 h-5 text-gray-600" />
+              <span className="text-sm font-medium text-gray-700">Galeria</span>
             </button>
           </div>
 
@@ -355,12 +362,20 @@ export function MobileCreatePostModal({
         </div>
       </div>
 
-      {/* Hidden File Input */}
+      {/* Hidden File Inputs */}
       <input
         ref={fileInputRef}
         type="file"
         multiple
         accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*,video/*"
+        capture="environment"
         onChange={handleFileSelect}
         className="hidden"
       />
