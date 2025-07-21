@@ -327,95 +327,11 @@ export function PostPage({ userToken, currentUserId }: PostPageProps) {
       {/* Comments Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="p-6">
-          <h2 className="text-lg font-semibold mb-4">
-            Comentários ({post.comments_count})
-          </h2>
-
-          {/* Add Comment Form */}
-          <form onSubmit={handleSubmitComment} className="mb-6">
-            <div className="flex space-x-3">
-              <img
-                src={`https://ui-avatars.com/api/?name=User&background=3B82F6&color=fff`}
-                alt="Sua foto"
-                className="w-10 h-10 rounded-full"
-              />
-              <div className="flex-1">
-                <textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Escreva um comentário..."
-                  className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  rows={3}
-                />
-                <button
-                  type="submit"
-                  disabled={submittingComment || !newComment.trim()}
-                  className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {submittingComment ? "Enviando..." : "Comentar"}
-                </button>
-              </div>
-            </div>
-          </form>
-
-          {/* Comments List */}
-          <div className="space-y-4">
-            {comments.map((comment) => (
-              <div key={comment.id} className="flex space-x-3">
-                <img
-                  src={
-                    comment.author.avatar?.startsWith("http")
-                      ? comment.author.avatar
-                      : comment.author.avatar
-                        ? `http://localhost:8000${comment.author.avatar}`
-                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                            `${comment.author.first_name} ${comment.author.last_name}`,
-                          )}&background=3B82F6&color=fff`
-                  }
-                  alt={`${comment.author.first_name} ${comment.author.last_name}`}
-                  className="w-10 h-10 rounded-full"
-                />
-                <div className="flex-1">
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-gray-900">
-                        {comment.author.first_name} {comment.author.last_name}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {formatTimeAgo(comment.created_at)}
-                      </span>
-                    </div>
-                    <p className="text-gray-700">{comment.content}</p>
-                  </div>
-
-                  {/* Comment Actions */}
-                  <div className="flex items-center space-x-4 mt-2 text-sm">
-                    <button className="text-gray-500 hover:text-blue-600 font-medium">
-                      Curtir
-                    </button>
-                    <button className="text-gray-500 hover:text-blue-600 font-medium">
-                      Responder
-                    </button>
-                    {comment.reactions_count > 0 && (
-                      <span className="text-gray-500">
-                        {comment.reactions_count} curtidas
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {comments.length === 0 && (
-              <div className="text-center py-8">
-                <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">Ainda não há comentários</p>
-                <p className="text-gray-400 text-sm">
-                  Seja o primeiro a comentar!
-                </p>
-              </div>
-            )}
-          </div>
+          <p className="text-gray-500 text-center py-8">
+            Os comentários foram movidos para o componente PostCard.
+            <br />
+            Use o botão "Comentar" no post para interagir.
+          </p>
         </div>
       </div>
     </div>

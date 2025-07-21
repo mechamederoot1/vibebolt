@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Send, Heart, Reply, MoreHorizontal } from "lucide-react";
+import { Send, Heart, Reply, MoreHorizontal, X } from "lucide-react";
 
 interface Comment {
   id: number;
@@ -21,6 +21,7 @@ interface CommentSectionProps {
   userToken: string;
   isOpen: boolean;
   onClose: () => void;
+  isMobile?: boolean;
 }
 
 export const CommentSection: React.FC<CommentSectionProps> = ({
@@ -28,6 +29,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
   userToken,
   isOpen,
   onClose,
+  isMobile = false,
 }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
@@ -75,7 +77,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
         },
         body: JSON.stringify({
           content: newComment,
-          post_id: parseInt(postId),
+          post_id: parseInt(postId.toString()),
         }),
       });
 
@@ -104,7 +106,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
         },
         body: JSON.stringify({
           content: replyText,
-          post_id: parseInt(postId),
+          post_id: parseInt(postId.toString()),
           parent_id: parentId,
         }),
       });
@@ -136,17 +138,25 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
 
   if (!isOpen) return null;
 
+  const containerClass = isMobile
+    ? "fixed inset-0 bg-white z-50 flex flex-col"
+    : "fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50 md:items-center";
+
+  const modalClass = isMobile
+    ? "w-full h-full"
+    : "bg-white w-full max-w-2xl max-h-[80vh] rounded-t-xl md:rounded-xl overflow-hidden";
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50 md:items-center">
-      <div className="bg-white w-full max-w-2xl max-h-[80vh] rounded-t-xl md:rounded-xl overflow-hidden">
+    <div className={containerClass}>
+      <div className={modalClass}>
         {/* Header */}
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+        <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-white">
           <h3 className="text-lg font-semibold">Comentários</h3>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full"
           >
-            ×
+            <X className="w-5 h-5" />
           </button>
         </div>
 
@@ -251,7 +261,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
         </div>
 
         {/* Comment Input */}
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 bg-white">
           <form onSubmit={handleSubmitComment} className="flex space-x-3">
             <input
               type="text"
