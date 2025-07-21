@@ -27,8 +27,8 @@ export const uploadStoryMedia = async (
     const formData = new FormData();
     formData.append("file", file);
 
-    // Try story-specific media upload endpoint first
-    let response = await fetch(`${API_BASE_URL}/users/me/story-media`, {
+    // Use the correct media upload endpoint
+    const response = await fetch(`${API_BASE_URL}/upload/media`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -36,22 +36,11 @@ export const uploadStoryMedia = async (
       body: formData,
     });
 
-    // If story-specific endpoint doesn't exist, try general media endpoint
-    if (!response.ok && response.status === 404) {
-      console.log("📤 Trying general media upload endpoint...");
-      response = await fetch(`${API_BASE_URL}/users/me/media`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-        body: formData,
-      });
-    }
-
     if (response.ok) {
       const data = await response.json();
       console.log("✅ Media upload successful:", data);
-      return data.url || data.media_url || data.file_url || data.path;
+      // The upload endpoint returns file_path which is the URL we need
+      return data.file_path || data.url || data.media_url || data.file_url;
     } else {
       const errorText = await response.text();
       console.error("❌ Media upload failed:", {
