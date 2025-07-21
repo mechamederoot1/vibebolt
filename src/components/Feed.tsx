@@ -60,10 +60,9 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("http://localhost:8000/posts/", {
+      const response = await apiCall("/posts/", {
         headers: {
           Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
         },
       });
 
@@ -138,7 +137,7 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
 
       if (response.ok) {
         const postData = await response.json();
-        console.log("�� Post/Testimonial created successfully:", postData);
+        console.log("✅ Post/Testimonial created successfully:", postData);
         console.log("🔄 Refreshing feeds...");
 
         fetchPosts();
