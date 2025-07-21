@@ -24,7 +24,7 @@ export const uploadStoryMedia = async (
     formData.append("file", file);
 
     // Try different upload endpoints
-    const response = await fetch("http://localhost:8000/users/me/media", {
+    const response = await fetch(`${API_BASE_URL}/users/me/media`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
