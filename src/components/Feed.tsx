@@ -304,6 +304,11 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
         isOpen={showCreateStory}
         onClose={() => setShowCreateStory(false)}
         onSubmit={handleCreateStory}
+        onSuccess={() => {
+          setStoryRefreshTrigger((prev) => prev + 1);
+          setShowCreateStory(false);
+        }}
+        userToken={user.token}
       />
     </div>
   );
