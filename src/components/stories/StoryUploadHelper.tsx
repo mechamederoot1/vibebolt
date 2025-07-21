@@ -1,4 +1,5 @@
 // Helper functions for story upload functionality
+import { apiCall, API_BASE_URL } from "../../config/api";
 
 export interface StoryUploadData {
   content: string;
