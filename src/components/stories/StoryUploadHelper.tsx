@@ -17,14 +17,18 @@ export const uploadStoryMedia = async (
 ): Promise<string | null> => {
   if (!file) return null;
 
-  console.log("🔥 Uploading story media file:", file.name);
+  console.log("🔥 Uploading story media file:", {
+    name: file.name,
+    size: file.size,
+    type: file.type
+  });
 
   try {
     const formData = new FormData();
     formData.append("file", file);
 
-    // Try different upload endpoints
-    const response = await fetch(`${API_BASE_URL}/users/me/media`, {
+    // Try story-specific media upload endpoint first
+    let response = await fetch(`${API_BASE_URL}/users/me/story-media`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -32,12 +36,29 @@ export const uploadStoryMedia = async (
       body: formData,
     });
 
+    // If story-specific endpoint doesn't exist, try general media endpoint
+    if (!response.ok && response.status === 404) {
+      console.log("📤 Trying general media upload endpoint...");
+      response = await fetch(`${API_BASE_URL}/users/me/media`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: formData,
+      });
+    }
+
     if (response.ok) {
       const data = await response.json();
       console.log("✅ Media upload successful:", data);
-      return data.url || data.media_url || data.file_url;
+      return data.url || data.media_url || data.file_url || data.path;
     } else {
-      console.error("❌ Media upload failed:", await response.text());
+      const errorText = await response.text();
+      console.error("❌ Media upload failed:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText
+      });
       return null;
     }
   } catch (error) {
@@ -54,7 +75,16 @@ export const createStoryWithFile = async (
   privacy: string,
   userToken: string,
 ): Promise<boolean> => {
-  console.log("🔥 Creating story with FormData approach...");
+  console.log("🔥 Creating story with enhanced approach...");
+  console.log("📋 Story params:", {
+    hasContent: !!content,
+    hasMediaFile: !!mediaFile,
+    mediaFileName: mediaFile?.name,
+    mediaFileType: mediaFile?.type,
+    storyDuration,
+    backgroundColor,
+    privacy
+  });
 
   try {
     let mediaUrl: string | null = null;
@@ -69,6 +99,7 @@ export const createStoryWithFile = async (
 
       if (!mediaUrl) {
         console.error("❌ Failed to upload media file");
+        alert("Erro ao fazer upload da mídia. Tente novamente.");
         return false;
       }
 
@@ -84,9 +115,16 @@ export const createStoryWithFile = async (
       console.log("✅ Media uploaded successfully:", mediaUrl);
     }
 
+    // Validate required content
+    if (!content && !mediaUrl) {
+      console.error("❌ Story must have either content or media");
+      alert("Adicione texto ou uma mídia ao seu story!");
+      return false;
+    }
+
     // Create story payload
     const payload: StoryUploadData = {
-      content,
+      content: content || "",
       media_type: mediaType,
       media_url: mediaUrl,
       duration_hours: storyDuration,
@@ -101,6 +139,7 @@ export const createStoryWithFile = async (
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
@@ -111,12 +150,26 @@ export const createStoryWithFile = async (
       return true;
     } else {
       const errorData = await response.text();
-      console.error("❌ Story creation failed:", errorData);
-      console.error("Response status:", response.status);
+      console.error("❌ Story creation failed:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+
+      // Show user-friendly error message
+      if (response.status === 413) {
+        alert("Arquivo muito grande! Tente com um arquivo menor.");
+      } else if (response.status === 400) {
+        alert("Dados inválidos. Verifique se o arquivo é válido.");
+      } else {
+        alert("Erro ao criar story. Tente novamente.");
+      }
+
       return false;
     }
   } catch (error) {
     console.error("❌ Story creation error:", error);
+    alert("Erro de conexão. Verifique sua internet e tente novamente.");
     return false;
   }
 };
