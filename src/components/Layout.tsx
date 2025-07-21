@@ -19,6 +19,7 @@ import { FriendRequestsModal } from "./modals/FriendRequestsModal";
 import { notificationService } from "../services/NotificationService";
 import { Logo } from "./ui/Logo";
 import { useTheme } from "../contexts/ThemeContext";
+import { API_BASE_URL } from "../config/api";
 
 interface LayoutProps {
   children: React.ReactNode;
