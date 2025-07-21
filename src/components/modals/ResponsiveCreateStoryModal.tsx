@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ModernCreateStoryModal } from "./ModernCreateStoryModal";
 import { MobileCreateStoryModal } from "./MobileCreateStoryModal";
 import { MobileStoryCreator } from "./MobileStoryCreator";
+import { EnhancedMobileStoryCreator } from "./EnhancedMobileStoryCreator";
 
 interface ResponsiveCreateStoryModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface ResponsiveCreateStoryModalProps {
     privacy?: string,
     overlays?: any[],
   ) => void;
+  onSuccess?: () => void;
   userToken: string;
 }
 
@@ -21,6 +23,7 @@ export function ResponsiveCreateStoryModal({
   isOpen,
   onClose,
   onSubmit,
+  onSuccess,
   userToken,
 }: ResponsiveCreateStoryModalProps) {
   const [isMobile, setIsMobile] = useState(false);
@@ -77,10 +80,10 @@ export function ResponsiveCreateStoryModal({
 
   if (isMobile || forceMinimalMobile) {
     return (
-      <MobileStoryCreator
+      <EnhancedMobileStoryCreator
         isOpen={isOpen}
         onClose={onClose}
-        onSubmit={handleMobileStorySubmit}
+        onSuccess={onSuccess || (() => {})}
         userToken={userToken}
       />
     );
