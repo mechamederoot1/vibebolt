@@ -21,6 +21,7 @@ import { PublicProfilePage } from "./pages/PublicProfilePage";
 import { TermsOfService } from "./pages/TermsOfService";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { notificationService } from "./services/NotificationService";
+import { apiCall } from "./config/api";
 
 interface User {
   id?: number;
