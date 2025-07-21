@@ -149,7 +149,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
         overlays: overlays || [],
       };
 
-      const response = await fetch("http://localhost:8000/stories/", {
+      const response = await fetch(`${API_BASE_URL}/stories/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
