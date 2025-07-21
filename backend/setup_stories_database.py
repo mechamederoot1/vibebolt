@@ -72,12 +72,12 @@ def create_stories_tables():
         with engine.connect() as conn:
             try:
                 result = conn.execute(text("""
-                    SELECT CHARACTER_MAXIMUM_LENGTH 
-                    FROM INFORMATION_SCHEMA.COLUMNS 
-                    WHERE TABLE_NAME = 'stories' 
+                    SELECT CHARACTER_MAXIMUM_LENGTH
+                    FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE TABLE_NAME = 'stories'
                     AND COLUMN_NAME = 'media_url'
                 """)).fetchone()
-                
+
                 if result and result[0]:
                     if result[0] >= 500:
                         print(f"✅ media_url column length is sufficient ({result[0]} chars)")
@@ -92,6 +92,31 @@ def create_stories_tables():
                             print(f"❌ Failed to increase media_url column length: {e}")
             except Exception as e:
                 print(f"⚠️  Could not check media_url column length: {e}")
+
+        # Check if background_color column can store CSS gradients
+        with engine.connect() as conn:
+            try:
+                result = conn.execute(text("""
+                    SELECT CHARACTER_MAXIMUM_LENGTH
+                    FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE TABLE_NAME = 'stories'
+                    AND COLUMN_NAME = 'background_color'
+                """)).fetchone()
+
+                if result and result[0]:
+                    if result[0] >= 255:
+                        print(f"✅ background_color column length is sufficient ({result[0]} chars)")
+                    else:
+                        print(f"⚠️  background_color column too short ({result[0]} chars), expanding to 255...")
+                        # Try to alter the column
+                        try:
+                            conn.execute(text("ALTER TABLE stories MODIFY COLUMN background_color VARCHAR(255)"))
+                            conn.commit()
+                            print("✅ background_color column expanded to 255 characters for CSS gradients")
+                        except Exception as e:
+                            print(f"❌ Failed to expand background_color column: {e}")
+            except Exception as e:
+                print(f"⚠️  Could not check background_color column length: {e}")
         
         return True
         
