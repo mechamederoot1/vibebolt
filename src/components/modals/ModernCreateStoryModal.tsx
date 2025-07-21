@@ -21,6 +21,7 @@ import {
   Lock,
   Sliders,
 } from "lucide-react";
+import { getSafeBackground, getBackgroundStyle } from "../stories/BackgroundUtils";
 
 interface ModernCreateStoryModalProps {
   isOpen: boolean;
@@ -249,23 +250,19 @@ export function ModernCreateStoryModal({
 
     let mediaData = null;
     if (mediaFile) {
-      const base64 = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.readAsDataURL(mediaFile);
-      });
-
+      // Pass the actual file object, not base64
       mediaData = {
         type: storyType,
-        url: base64,
-        file: mediaFile,
+        file: mediaFile, // This is what the upload helper expects
         fileName: mediaFile.name,
         fileSize: mediaFile.size,
       };
     }
 
     const finalBackground = useGradient ? gradientBackground : backgroundColor;
-    onSubmit(content, mediaData, storyDuration, finalBackground);
+    const safeBackground = getSafeBackground(finalBackground);
+    console.log("Using safe background:", safeBackground);
+    onSubmit(content, mediaData, storyDuration, safeBackground);
 
     // Reset form
     setContent("");
@@ -280,9 +277,8 @@ export function ModernCreateStoryModal({
   if (!isOpen) return null;
 
   const renderStoryPreview = () => {
-    const backgroundStyle = useGradient
-      ? { backgroundImage: gradientBackground }
-      : { backgroundColor };
+    const finalBackground = useGradient ? gradientBackground : backgroundColor;
+    const backgroundStyle = getBackgroundStyle(finalBackground);
 
     return (
       <div

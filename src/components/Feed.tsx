@@ -220,12 +220,12 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
 
   if (error) {
     return (
-      <div className="space-y-6">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-          <p className="text-red-600">{error}</p>
+      <div className="space-y-4 md:space-y-6 px-2 md:px-0">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 md:p-6 text-center">
+          <p className="text-red-600 text-sm md:text-base">{error}</p>
           <button
             onClick={fetchPosts}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm md:text-base"
           >
             Tentar novamente
           </button>
@@ -235,7 +235,7 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 px-2 md:px-0">
       {/* Stories Bar */}
       <EnhancedStoriesBar
         userToken={user.token}
@@ -245,19 +245,19 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
       />
 
       {/* Create Post */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <div className="flex items-center space-x-4">
+      <div className="bg-white rounded-xl shadow-sm p-4 md:p-6">
+        <div className="flex items-center space-x-3 md:space-x-4">
           <img
             src={
               user.avatar ||
               `https://ui-avatars.com/api/?name=${user.name}&background=3B82F6&color=fff`
             }
             alt={user.name}
-            className="w-12 h-12 rounded-full"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full"
           />
           <button
             onClick={() => setShowCreatePost(true)}
-            className="flex-1 text-left p-4 bg-slate-100 rounded-full text-slate-600 hover:bg-slate-200 transition-colors"
+            className="flex-1 text-left p-3 md:p-4 bg-slate-100 rounded-full text-slate-600 hover:bg-slate-200 transition-colors text-sm md:text-base"
           >
             No que você está pensando, {user.name.split(" ")[0]}?
           </button>
@@ -265,15 +265,15 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
       </div>
 
       {/* Posts Feed */}
-      <div className="space-y-4">
+      <div className="space-y-3 md:space-y-4">
         {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="flex items-center justify-center py-8 md:py-12">
+            <div className="animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-b-2 border-blue-600"></div>
           </div>
         ) : posts.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-            <p className="text-slate-500 text-lg">Nenhum post ainda.</p>
-            <p className="text-slate-400 mt-2">
+          <div className="bg-white rounded-xl shadow-sm p-8 md:p-12 text-center">
+            <p className="text-slate-500 text-base md:text-lg">Nenhum post ainda.</p>
+            <p className="text-slate-400 mt-2 text-sm md:text-base">
               Seja o primeiro a compartilhar algo!
             </p>
           </div>
@@ -304,6 +304,11 @@ export const Feed: React.FC<FeedProps> = ({ user }) => {
         isOpen={showCreateStory}
         onClose={() => setShowCreateStory(false)}
         onSubmit={handleCreateStory}
+        onSuccess={() => {
+          setStoryRefreshTrigger((prev) => prev + 1);
+          setShowCreateStory(false);
+        }}
+        userToken={user.token}
       />
     </div>
   );

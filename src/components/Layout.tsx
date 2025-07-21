@@ -140,26 +140,22 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
     overlays?: any[],
   ) => {
     try {
-      const payload = {
+      // Import the proper story creation helper
+      const { createStoryWithFile } = await import('./stories/StoryUploadHelper');
+
+      // Extract the actual file from mediaData if present
+      const mediaFile = mediaData?.file || null;
+
+      const success = await createStoryWithFile(
         content,
-        media_type: mediaData?.type || null,
-        media_url: mediaData?.url || null,
-        duration_hours: storyDuration || 24,
-        background_color: backgroundColor,
-        privacy: privacy || "public",
-        overlays: overlays || [],
-      };
+        mediaFile,
+        storyDuration || 24,
+        backgroundColor || "#3B82F6",
+        privacy || "public",
+        user.token,
+      );
 
-      const response = await fetch(`${API_BASE_URL}/stories/`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
+      if (success) {
         window.location.reload();
       }
     } catch (error) {
@@ -445,6 +441,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
         isOpen={showCreateStory}
         onClose={() => setShowCreateStory(false)}
         onSubmit={handleCreateStory}
+        onSuccess={() => {
+          setShowCreateStory(false);
+          window.location.reload(); // Refresh to show new story
+        }}
         userToken={user.token}
       />
 

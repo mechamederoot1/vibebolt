@@ -61,31 +61,31 @@ export function PostCard({ post, onLike, onComment, onShare, onBookmark }: PostC
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-3 md:mb-4">
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-3 md:p-4">
         <div className="flex items-center space-x-3">
           <img
             src={post.user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.user.first_name + ' ' + post.user.last_name)}&background=3B82F6&color=fff`}
             alt={`${post.user.first_name} ${post.user.last_name}`}
-            className="w-10 h-10 rounded-full"
+            className="w-9 h-9 md:w-10 md:h-10 rounded-full"
           />
-          <div>
-            <h3 className="font-semibold text-gray-900">
+          <div className="min-w-0 flex-1">
+            <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">
               {post.user.first_name} {post.user.last_name}
             </h3>
-            <p className="text-sm text-gray-500">{formatTime(post.created_at)}</p>
+            <p className="text-xs md:text-sm text-gray-500">{formatTime(post.created_at)}</p>
           </div>
         </div>
-        <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-          <MoreHorizontal className="w-5 h-5 text-gray-600" />
+        <button className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0">
+          <MoreHorizontal className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
         </button>
       </div>
 
       {/* Content */}
       {post.content && (
-        <div className="px-4 pb-3">
-          <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
+        <div className="px-3 md:px-4 pb-3">
+          <p className="text-gray-900 whitespace-pre-wrap text-sm md:text-base leading-relaxed">{post.content}</p>
         </div>
       )}
 
@@ -96,60 +96,60 @@ export function PostCard({ post, onLike, onComment, onShare, onBookmark }: PostC
             <img
               src={post.media_url}
               alt="Post media"
-              className="w-full max-h-96 object-cover"
+              className="w-full max-h-64 md:max-h-96 object-cover"
             />
           ) : post.media_type === 'video' ? (
             <video
               src={post.media_url}
               controls
-              className="w-full max-h-96"
+              className="w-full max-h-64 md:max-h-96"
             />
           ) : null}
         </div>
       )}
 
       {/* Actions */}
-      <div className="px-4 py-3 border-t border-gray-100">
+      <div className="px-3 md:px-4 py-2 md:py-3 border-t border-gray-100">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-1 md:space-x-4">
             <button
               onClick={handleLike}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+              className={`flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1.5 md:py-2 rounded-lg transition-colors ${
                 isLiked
                   ? 'text-red-600 bg-red-50 hover:bg-red-100'
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
-              <span className="text-sm font-medium">{likesCount}</span>
+              <Heart className={`w-4 h-4 md:w-5 md:h-5 ${isLiked ? 'fill-current' : ''}`} />
+              <span className="text-xs md:text-sm font-medium">{likesCount}</span>
             </button>
 
             <button
               onClick={() => onComment?.(post.id)}
-              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              className="flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
             >
-              <MessageCircle className="w-5 h-5" />
-              <span className="text-sm font-medium">{post.comments_count}</span>
+              <MessageCircle className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="text-xs md:text-sm font-medium">{post.comments_count}</span>
             </button>
 
             <button
               onClick={() => onShare?.(post.id)}
-              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              className="flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
             >
-              <Share className="w-5 h-5" />
-              <span className="text-sm font-medium">Compartilhar</span>
+              <Share className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="hidden md:inline text-xs md:text-sm font-medium">Compartilhar</span>
             </button>
           </div>
 
           <button
             onClick={handleBookmark}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`p-1.5 md:p-2 rounded-lg transition-colors ${
               isBookmarked
                 ? 'text-blue-600 bg-blue-50 hover:bg-blue-100'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-current' : ''}`} />
+            <Bookmark className={`w-4 h-4 md:w-5 md:h-5 ${isBookmarked ? 'fill-current' : ''}`} />
           </button>
         </div>
       </div>
